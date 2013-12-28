@@ -9,9 +9,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class MyConroller {
 
 	@RequestMapping(value = "/security", method = RequestMethod.GET)
-	public String security(Model modelAndView) {
+	public String security(Model model) {
 		System.out.println("calling ... /security");
-		modelAndView.addAttribute("name", "Jay");
-		return "hello";
+		model.addAttribute("name", "Jay");
+		return "pages/hello";
 	}
+
+
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String profile(Model model) {
+		System.out.println("calling ... /profile");
+		return "user/profile";
+	}
+
 }
