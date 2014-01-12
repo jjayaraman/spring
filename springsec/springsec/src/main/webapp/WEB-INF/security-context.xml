@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
 	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-	<authentication-manager>
+	<authentication-manager id="authenticationManager">
 		<authentication-provider>
 			<user-service>
 				<user name="jay" password="jay" authorities="ROLE_USER" />
@@ -15,5 +15,15 @@
 		<intercept-url pattern="/security" access="ROLE_USER" />
 		<intercept-url pattern="/profile" access="ROLE_USER" />
 	</http>
-	
+
+
+	<beans:bean id="basicAuthenticationFilter"
+		class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+	</beans:bean>
+	<beans:bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+		<beans:property name="realmName" value="MyRealm" />
+	</beans:bean>
 </beans:beans>

@@ -1,0 +1,33 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider>
+			<user-service id="userService">
+				<user name="jay" password="jay" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+	<http entry-point-ref="digestAuthenticationEntryPoint">
+		<intercept-url pattern="/**" access="ROLE_USER" />
+		<custom-filter ref="digestAuthenticationFilter" position="DIGEST_AUTH_FILTER" />
+	</http>
+
+
+	<beans:bean id="digestAuthenticationFilter"
+		class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
+		<beans:property name="authenticationEntryPoint" ref="digestAuthenticationEntryPoint" />
+		<beans:property name="userDetailsService" ref="userService" />
+	</beans:bean>
+
+	<beans:bean id="digestAuthenticationEntryPoint"
+		class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
+		<beans:property name="realmName" value="Jay Digest Realm" />
+		<beans:property name="key" value="jayakumar" />
+	</beans:bean>
+
+
+</beans:beans>
